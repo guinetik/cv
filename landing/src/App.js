@@ -108,7 +108,7 @@ export function App() {
     <div class="min-h-screen flex flex-col items-center justify-center p-8">
       <!-- Logo -->
       <div class="mb-12 animate-fade-in">
-        <img src="./logo.svg" alt="João Guilherme" class="h-24 w-auto mx-auto" />
+        <img src="./logo.svg" alt="Guinetik" class="h-24 w-auto mx-auto" />
       </div>
 
       <h1>João Guilherme Sousa - Software Engineer</h1>
