@@ -153,7 +153,7 @@
 }
 {
   \setmainfont{SourceSansPro-Light}[
-    Path = fonts/, 
+    Path = ../common/fonts/, 
     BoldFont = SourceSansPro-Regular, 
     ItalicFont = SourceSansPro-LightIt]
 }

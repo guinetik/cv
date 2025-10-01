@@ -6,11 +6,11 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-echo Compiling CV to PDF...
-docker run --rm -v "%cd%":/workspace cv-builder lualatex cv.tex
+echo Compiling CVs to PDF...
+docker run --rm -v "%cd%":/workspace cv-builder sh -c "cd en && lualatex cv.tex && cd ../pt && lualatex cv.tex"
 if %errorlevel% neq 0 (
     echo Compilation failed!
     exit /b 1
 )
 
-echo CV compiled successfully! Check cv.pdf
+echo CVs compiled successfully! Check en/cv.pdf and pt/cv.pdf

@@ -5,6 +5,10 @@ on:
     branches: [ master, main ]
   workflow_dispatch: # Allow manual triggering
 
+permissions:
+  contents: write
+  pull-requests: read
+
 jobs:
   build-cv:
     runs-on: ubuntu-latest
@@ -19,14 +23,16 @@ jobs:
     - name: Build Docker image
       run: docker build -t cv-builder .
       
-    - name: Compile CV to PDF
-      run: docker run --rm -v ${{ github.workspace }}:/workspace cv-builder lualatex cv.tex
+    - name: Compile CVs to PDF
+      run: docker run --rm -v ${{ github.workspace }}:/workspace cv-builder sh -c "cd en && lualatex cv.tex && cd ../pt && lualatex cv.tex"
       
-    - name: Upload PDF artifact
+    - name: Upload PDF artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: cv-pdf
-        path: cv.pdf
+        name: cv-pdfs
+        path: |
+          en/cv.pdf
+          pt/cv.pdf
         retention-days: 30
 
   create-release:
@@ -38,10 +44,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Download PDF artifact
+    - name: Download PDF artifacts
       uses: actions/download-artifact@v4
       with:
-        name: cv-pdf
+        name: cv-pdfs
         path: ./
         
     - name: Generate version tag
@@ -58,13 +64,18 @@ jobs:
         tag_name: v${{ steps.version.outputs.version }}
         name: CV v${{ steps.version.outputs.version }}
         body: |
-          ## João Guilherme Ribeiro de Sousa - CV
+          ## João Guilherme Ribeiro de Sousa - CVs
           
           **Generated on:** ${{ github.event.head_commit.timestamp }}
           **Commit:** ${{ github.sha }}
           
-          This is an automatically generated CV from the latest commit to master.
-        files: cv.pdf
+          This release contains both English and Portuguese versions of the CV, automatically generated from the latest commit to master.
+          
+          - **English CV**: `cv-en.pdf`
+          - **Portuguese CV**: `cv-pt.pdf`
+        files: |
+          en/cv.pdf
+          pt/cv.pdf
         draft: false
         prerelease: false
       env:

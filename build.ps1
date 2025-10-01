@@ -12,10 +12,10 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Compiling CV to PDF..." -ForegroundColor Green
 
 # Run the compilation using WSL
-wsl docker run --rm -v "$(wsl wslpath -w ${PWD}):/workspace" cv-builder lualatex cv.tex
+wsl docker run --rm -v "/mnt/d/Developer/cv:/workspace" cv-builder sh -c "cd en && lualatex cv.tex && cd ../pt && lualatex cv.tex"
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Compilation failed!" -ForegroundColor Red
     exit 1
 }
 
-Write-Host "CV compiled successfully! Check cv.pdf" -ForegroundColor Green
+Write-Host "CVs compiled successfully! Check en/cv.pdf and pt/cv.pdf" -ForegroundColor Green

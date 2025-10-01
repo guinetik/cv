@@ -39,20 +39,22 @@ Download the latest version: **[📥 Download CV (PDF)](https://github.com/guine
    
    # Or manually with Docker
    docker build -t cv-builder .
-   docker run --rm -v "$(pwd):/workspace" cv-builder lualatex cv.tex
+   docker run --rm -v "$(pwd):/workspace" cv-builder lualatex en/cv.tex
    ```
 
 3. **View the result**
-   - The compiled PDF will be generated as `cv.pdf`
+   - The compiled PDF will be generated as `en/cv.pdf`
 
 ### File Structure
 
 ```
 cv/
-├── cv.tex                    # Main LaTeX document
-├── yaac-another-awesome-cv.cls  # Custom document class
-├── section_*.tex            # Modular content sections
-├── fonts/                   # Source Sans Pro font files
+├── en/                      # English version
+│   ├── cv.tex              # Main LaTeX document
+│   ├── yaac-another-awesome-cv.cls  # Custom document class
+│   ├── section_*.tex       # Modular content sections
+│   ├── fonts/              # Source Sans Pro font files
+│   └── *.png, *.jpg        # Images and assets
 ├── Dockerfile              # Docker build configuration
 ├── .github/workflows/      # GitHub Actions CI/CD
 └── build.ps1              # Local build script

@@ -13,5 +13,5 @@ WORKDIR /workspace
 # Copy all CV files
 COPY . .
 
-# Default command to compile the CV
-CMD ["lualatex", "cv.tex"]
+# Default command to compile both CVs
+CMD ["sh", "-c", "cd en && lualatex cv.tex && cd ../pt && lualatex cv.tex"]
