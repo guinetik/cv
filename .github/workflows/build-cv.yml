@@ -1,0 +1,98 @@
+name: Build and Release CV
+
+on:
+  push:
+    branches: [ master, main ]
+  workflow_dispatch: # Allow manual triggering
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  build-cv:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build Docker image
+      run: docker build -t cv-builder .
+      
+    - name: Compile CVs to PDF
+      run: docker run --rm -v ${{ github.workspace }}:/workspace cv-builder sh -c "cd en && lualatex cv.tex && cd ../pt && lualatex cv.tex"
+      
+    - name: Upload PDF artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: cv-english
+        path: en/cv.pdf
+        retention-days: 30
+        
+    - name: Upload Portuguese PDF artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: cv-portuguese
+        path: pt/cv.pdf
+        retention-days: 30
+
+  create-release:
+    needs: build-cv
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Download English PDF artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: cv-english
+        path: ./
+        
+    - name: Download Portuguese PDF artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: cv-portuguese
+        path: ./
+        
+    - name: Rename PDF files
+      run: |
+        mv en/cv.pdf "CV - João Guilherme - English.pdf"
+        mv pt/cv.pdf "CV - João Guilherme - Português.pdf"
+        
+    - name: Generate version tag
+      id: version
+      run: |
+        # Use date-based versioning: YYYY.MM.DD
+        VERSION=$(date +'%Y.%m.%d')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Generated version: $VERSION"
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        name: CV v${{ steps.version.outputs.version }}
+        body: |
+          ## João Guilherme Ribeiro de Sousa - CVs
+          
+          **Generated on:** ${{ github.event.head_commit.timestamp }}
+          **Commit:** ${{ github.sha }}
+          
+          This release contains both English and Portuguese versions of the CV, automatically generated from the latest commit to master.
+          
+          - **English CV**: `CV - João Guilherme - English.pdf`
+          - **Portuguese CV**: `CV - João Guilherme - Português.pdf`
+        files: |
+          "CV - João Guilherme - English.pdf"
+          "CV - João Guilherme - Português.pdf"
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
