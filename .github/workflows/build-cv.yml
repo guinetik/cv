@@ -61,10 +61,40 @@ jobs:
         name: cv-portuguese
         path: ./pt/
         
+    - name: Debug file locations
+      run: |
+        echo "=== Current directory structure ==="
+        find . -name "*.pdf" -type f
+        echo "=== Contents of en/ directory ==="
+        ls -la en/ || echo "en/ directory not found"
+        echo "=== Contents of pt/ directory ==="
+        ls -la pt/ || echo "pt/ directory not found"
+        
     - name: Rename PDF files
       run: |
-        mv en/cv.pdf "CV - João Guilherme - English.pdf"
-        mv pt/cv.pdf "CV - João Guilherme - Português.pdf"
+        if [ -f "en/cv.pdf" ]; then
+          mv en/cv.pdf "CV - João Guilherme - English.pdf"
+          echo "English PDF renamed successfully"
+        else
+          echo "ERROR: en/cv.pdf not found"
+          exit 1
+        fi
+        
+        if [ -f "pt/cv.pdf" ]; then
+          mv pt/cv.pdf "CV - João Guilherme - Português.pdf"
+          echo "Portuguese PDF renamed successfully"
+        else
+          echo "ERROR: pt/cv.pdf not found"
+          exit 1
+        fi
+        
+    - name: Verify renamed files exist
+      run: |
+        echo "=== Verifying renamed files ==="
+        ls -la "CV - João Guilherme - English.pdf" || echo "English PDF not found"
+        ls -la "CV - João Guilherme - Português.pdf" || echo "Portuguese PDF not found"
+        echo "=== All files in current directory ==="
+        ls -la *.pdf || echo "No PDF files found in current directory"
         
     - name: Generate version tag
       id: version
@@ -101,8 +131,8 @@ jobs:
           - **English CV**: `CV - João Guilherme - English.pdf`
           - **Portuguese CV**: `CV - João Guilherme - Português.pdf`
         files: |
-          "CV - João Guilherme - English.pdf"
-          "CV - João Guilherme - Português.pdf"
+          CV - João Guilherme - English.pdf
+          CV - João Guilherme - Português.pdf
         draft: false
         prerelease: false
       env:
