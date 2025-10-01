@@ -1,0 +1,71 @@
+name: Build and Release CV
+
+on:
+  push:
+    branches: [ master, main ]
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  build-cv:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build Docker image
+      run: docker build -t cv-builder .
+      
+    - name: Compile CV to PDF
+      run: docker run --rm -v ${{ github.workspace }}:/workspace cv-builder lualatex cv.tex
+      
+    - name: Upload PDF artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: cv-pdf
+        path: cv.pdf
+        retention-days: 30
+
+  create-release:
+    needs: build-cv
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Download PDF artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: cv-pdf
+        path: ./
+        
+    - name: Generate version tag
+      id: version
+      run: |
+        # Use date-based versioning: YYYY.MM.DD
+        VERSION=$(date +'%Y.%m.%d')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Generated version: $VERSION"
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        name: CV v${{ steps.version.outputs.version }}
+        body: |
+          ## João Guilherme Ribeiro de Sousa - CV
+          
+          **Generated on:** ${{ github.event.head_commit.timestamp }}
+          **Commit:** ${{ github.sha }}
+          
+          This is an automatically generated CV from the latest commit to master.
+        files: cv.pdf
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
