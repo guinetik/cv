@@ -2,6 +2,7 @@
   "name": "cv-landing",
   "version": "1.0.0",
   "description": "João Guilherme's CV Landing Page",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "build": "vite build",
