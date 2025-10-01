@@ -1,0 +1,179 @@
+const experiments = [
+  {
+    title: "Asteroid Mining Game",
+    url: "https://codepen.io/guinetik/full/jEOdKXR",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/jEOdKXR",
+  },
+  {
+    title: "Dino Game",
+    url: "https://codepen.io/guinetik/full/yyLZKKa",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/yyLZKKa",
+  },
+  {
+    title: "WebGL Lava Lamp",
+    url: "https://codepen.io/guinetik/full/wBvNryx",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/wBvNryx",
+  },
+  {
+    title: "Particle Flow Simulation",
+    url: "https://codepen.io/guinetik/full/qEBgPRb",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/qEBgPRb",
+  },
+  {
+    title: "Solar System",
+    url: "https://codepen.io/guinetik/full/YPzBQRB",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/YPzBQRB",
+  },
+  {
+    title: "Graph Network Communities Simulation",
+    url: "https://codepen.io/guinetik/full/qEBgjJK",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/qEBgjJK",
+  },
+  {
+    title: "Matrix Rain",
+    url: "https://codepen.io/guinetik/full/JojxJvL",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/JojxJvL",
+  },
+  {
+    title: "Cymatics Simulation",
+    url: "https://codepen.io/guinetik/full/OPJdgMd",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/OPJdgMd",
+  },
+  {
+    title: "Macrodata Refinment",
+    url: "https://codepen.io/guinetik/full/mydvwXv",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/mydvwXv",
+  },
+  {
+    title: "Graph Network Simulation",
+    url: "https://codepen.io/guinetik/full/mydvwEz",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/mydvwEz",
+  },
+  {
+    title: "Game Of Life",
+    url: "https://codepen.io/guinetik/full/MYWLoby",
+    type: "codepen",
+    link: "https://codepen.io/guinetik/pen/MYWLoby",
+  },
+];
+
+// Get random experiment
+function getRandomExperiment() {
+  return experiments[Math.floor(Math.random() * experiments.length)];
+}
+
+// Get CV download URL based on browser language
+function getCVDownloadUrl() {
+  const browserLang = navigator.language || navigator.languages[0];
+  const isPortuguese = browserLang.startsWith('pt');
+  
+  // This will be updated to point to the actual GitHub releases
+  const baseUrl = 'https://github.com/guinetik/cv/releases/latest/download';
+  
+  if (isPortuguese) {
+    return `${baseUrl}/CV - João Guilherme - Português.pdf`;
+  } else {
+    return `${baseUrl}/CV - João Guilherme - English.pdf`;
+  }
+}
+
+// Get CV filename based on browser language
+function getCVFilename() {
+  const browserLang = navigator.language || navigator.languages[0];
+  const isPortuguese = browserLang.startsWith('pt');
+  
+  if (isPortuguese) {
+    return 'CV - João Guilherme - Português.pdf';
+  } else {
+    return 'CV - João Guilherme - English.pdf';
+  }
+}
+
+export function App() {
+  const randomExperiment = getRandomExperiment();
+  const cvUrl = getCVDownloadUrl();
+  const cvFilename = getCVFilename();
+  
+  return `
+    <div class="min-h-screen flex flex-col items-center justify-center p-8">
+      <!-- Logo -->
+      <div class="mb-12 animate-fade-in">
+        <img src="./logo.svg" alt="João Guilherme" class="h-24 w-auto mx-auto" />
+      </div>
+
+      <h1>João Guilherme Sousa - Software Engineer</h1>
+      
+      <!-- Download CV Button -->
+      <div class="mb-16 mt-10 animate-slide-up">
+        <a 
+          href="${cvUrl}" 
+          download="${cvFilename}"
+          class="btn-primary text-lg px-8 py-4 inline-flex items-center gap-3"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          Download CV
+        </a>
+        <p class="text-sm text-gray-400 mt-2 text-center">
+          ${navigator.language.startsWith('pt') ? 'Português' : 'English'} version
+        </p>
+      </div>
+
+      <h1>Check out a random experiment</h1>
+      
+      <!-- Random Experiment Container -->
+      <div class="w-full max-w-4xl animate-slide-up">
+        <div class="codepen-container">
+          <iframe 
+            src="${randomExperiment.url}" 
+            class="w-full h-96 border-0"
+            loading="lazy"
+            allowtransparency="true"
+            allowfullscreen="true"
+            title="${randomExperiment.title}"
+          ></iframe>
+        </div>
+        
+        <!-- Refresh Button -->
+        <div class="mt-4 text-center">
+          <button 
+            onclick="location.reload()" 
+            class="btn-secondary text-sm px-4 py-2"
+          >
+            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Show Another Experiment
+          </button>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div class="mt-16 text-center text-gray-500 text-sm animate-fade-in">
+        <p>Senior Software Engineer • Banking Systems • Creative Coding</p>
+        <div class="mt-2 flex justify-center gap-4">
+          <a href="https://github.com/guinetik" class="hover:text-blue-400 transition-colors duration-200">
+            GitHub
+          </a>
+          <a href="https://linkedin.com/in/guinetik" class="hover:text-blue-400 transition-colors duration-200">
+            LinkedIn
+          </a>
+          <a href="https://codepen.io/guinetik" class="hover:text-blue-400 transition-colors duration-200">
+            CodePen
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}

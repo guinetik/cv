@@ -1,0 +1,19 @@
+{
+  "name": "cv-landing",
+  "version": "1.0.0",
+  "description": "João Guilherme's CV Landing Page",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "vite": "^5.0.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0"
+  }
+}
