@@ -29,10 +29,15 @@ jobs:
     - name: Upload PDF artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: cv-pdfs
-        path: |
-          en/cv.pdf
-          pt/cv.pdf
+        name: cv-english
+        path: en/cv.pdf
+        retention-days: 30
+        
+    - name: Upload Portuguese PDF artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: cv-portuguese
+        path: pt/cv.pdf
         retention-days: 30
 
   create-release:
@@ -44,11 +49,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Download PDF artifacts
+    - name: Download English PDF artifact
       uses: actions/download-artifact@v4
       with:
-        name: cv-pdfs
+        name: cv-english
         path: ./
+        
+    - name: Download Portuguese PDF artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: cv-portuguese
+        path: ./
+        
+    - name: Rename PDF files
+      run: |
+        mv en/cv.pdf "CV - João Guilherme - English.pdf"
+        mv pt/cv.pdf "CV - João Guilherme - Português.pdf"
         
     - name: Generate version tag
       id: version
@@ -71,11 +87,11 @@ jobs:
           
           This release contains both English and Portuguese versions of the CV, automatically generated from the latest commit to master.
           
-          - **English CV**: `cv-en.pdf`
-          - **Portuguese CV**: `cv-pt.pdf`
+          - **English CV**: `CV - João Guilherme - English.pdf`
+          - **Portuguese CV**: `CV - João Guilherme - Português.pdf`
         files: |
-          en/cv.pdf
-          pt/cv.pdf
+          "CV - João Guilherme - English.pdf"
+          "CV - João Guilherme - Português.pdf"
         draft: false
         prerelease: false
       env:
