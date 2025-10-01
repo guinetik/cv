@@ -81,9 +81,9 @@ function getCVDownloadUrl() {
   const baseUrl = 'https://github.com/guinetik/cv/releases/latest/download';
   
   if (isPortuguese) {
-    return `${baseUrl}/CV - João Guilherme - Português.pdf`;
+    return `${baseUrl}/CV_Joao_Guilherme_Portugues.pdf`;
   } else {
-    return `${baseUrl}/CV - João Guilherme - English.pdf`;
+    return `${baseUrl}/CV_Joao_Guilherme_English.pdf`;
   }
 }
 
@@ -93,9 +93,9 @@ function getCVFilename() {
   const isPortuguese = browserLang.startsWith('pt');
   
   if (isPortuguese) {
-    return 'CV - João Guilherme - Português.pdf';
+    return 'CV_Joao_Guilherme_Portugues.pdf';
   } else {
-    return 'CV - João Guilherme - English.pdf';
+    return 'CV_Joao_Guilherme_English.pdf';
   }
 }
 

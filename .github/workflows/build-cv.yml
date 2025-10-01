@@ -73,7 +73,7 @@ jobs:
     - name: Rename PDF files
       run: |
         if [ -f "en/cv.pdf" ]; then
-          mv en/cv.pdf "CV - João Guilherme - English.pdf"
+          mv en/cv.pdf "CV_Joao_Guilherme_English.pdf"
           echo "English PDF renamed successfully"
         else
           echo "ERROR: en/cv.pdf not found"
@@ -81,7 +81,7 @@ jobs:
         fi
         
         if [ -f "pt/cv.pdf" ]; then
-          mv pt/cv.pdf "CV - João Guilherme - Português.pdf"
+          mv pt/cv.pdf "CV_Joao_Guilherme_Portugues.pdf"
           echo "Portuguese PDF renamed successfully"
         else
           echo "ERROR: pt/cv.pdf not found"
@@ -91,8 +91,8 @@ jobs:
     - name: Verify renamed files exist
       run: |
         echo "=== Verifying renamed files ==="
-        ls -la "CV - João Guilherme - English.pdf" || echo "English PDF not found"
-        ls -la "CV - João Guilherme - Português.pdf" || echo "Portuguese PDF not found"
+        ls -la "CV_Joao_Guilherme_English.pdf" || echo "English PDF not found"
+        ls -la "CV_Joao_Guilherme_Portugues.pdf" || echo "Portuguese PDF not found"
         echo "=== All files in current directory ==="
         ls -la *.pdf || echo "No PDF files found in current directory"
         
@@ -138,11 +138,11 @@ jobs:
           
           This release contains both English and Portuguese versions of the CV, automatically generated from the latest commit to master.
           
-          - **English CV**: `CV - João Guilherme - English.pdf`
-          - **Portuguese CV**: `CV - João Guilherme - Português.pdf`
+          - **English CV**: `CV_Joao_Guilherme_English.pdf`
+          - **Portuguese CV**: `CV_Joao_Guilherme_Portugues.pdf`
         files: |
-          CV - João Guilherme - English.pdf
-          CV - João Guilherme - Português.pdf
+          CV_Joao_Guilherme_English.pdf
+          CV_Joao_Guilherme_Portugues.pdf
         draft: false
         prerelease: false
       env:
