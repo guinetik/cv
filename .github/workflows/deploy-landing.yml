@@ -43,4 +43,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./landing/dist
           publish_branch: gh-pages
-          cname: # Leave empty for username.github.io/repo-name
+          cname: cv.guinetik.com
