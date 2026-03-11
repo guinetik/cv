@@ -19,7 +19,7 @@
 
 \ProvidesClass{yaac-another-awesome-cv}[2018/07/19  v1.9.2 'YAAC: Another Awesome CV' Class]
 
-\LoadClass[a4paper]{article}
+\LoadClass[11pt]{article}
 
 \newif\if@showLinks   \@showLinksfalse
 
@@ -62,7 +62,7 @@
 \RequirePackage{url,parskip} 	    % other packages for formatting
 \RequirePackage[usenames,dvipsnames]{xcolor}
 \RequirePackage{fullpage}
-\RequirePackage[margin=1.5cm]{geometry}
+\RequirePackage[margin=1.5cm, paperwidth=11in, paperheight=17in]{geometry}
 \RequirePackage{fontawesome}
 \RequirePackage{hyperref}
 \RequirePackage{titlesec}
